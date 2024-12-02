@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const AddEvent = ({ onAdd, editingEvent }) => {
   const [formData, setFormData] = useState({
@@ -18,13 +19,27 @@ const AddEvent = ({ onAdd, editingEvent }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { eventName, location, description } = formData;
-    if (!eventName || !location || !description) return alert("All fields are required!");
 
-    onAdd(formData);
-    setFormData({ eventName: "", location: "", description: "" });
+    // Validation
+    if (!eventName || !location || !description) {
+      return alert("All fields are required!");
+    }
+
+    try {
+      // Make POST request to the backend to add the event
+      const response = await axios.post("http://localhost:5000/api/events/addEvent", formData);
+      alert(response.data.message); // Display success message
+
+      // Optionally reset the form or pass back data to parent component
+      onAdd(formData);
+      setFormData({ eventName: "", location: "", description: "" });
+    } catch (error) {
+      console.error("Error adding event:", error);
+      alert("Failed to add event");
+    }
   };
 
   return (
