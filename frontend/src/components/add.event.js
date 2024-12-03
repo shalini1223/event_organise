@@ -29,13 +29,18 @@ const AddEvent = ({ onAdd, editingEvent }) => {
     }
 
     try {
-      // Make POST request to the backend to add the event
-      const response = await axios.post("http://localhost:5000/api/events/addEvent", formData);
+      //request to backend to add the event
+      const response = await axios.post(
+        "http://localhost:5000/api/events/addEvent",
+        formData,
+        { headers: { "Content-Type": "application/json" } }
+      );
+     console.log('Response: ', response);
       alert(response.data.message); // Display success message
 
       // Optionally reset the form or pass back data to parent component
       onAdd(formData);
-      setFormData({ eventName: "", location: "", description: "" });
+      setFormData({ eventName: "", location: "", description: "" });//clean function
     } catch (error) {
       console.error("Error adding event:", error);
       alert("Failed to add event");

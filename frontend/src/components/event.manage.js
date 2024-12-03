@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AddEvent from "./add.event";
-import EventTable from "./event.table";
+import EventTable from "./event.list";
 
 const EventManager = () => {
   const [events, setEvents] = useState([]);
